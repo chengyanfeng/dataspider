@@ -9,4 +9,8 @@ public class Constants {
     public final static String CATALOG_PRONVINCE = "province";
     public final static String CATALOG_MAINCITY = "maincity";
 
+    //采购经理指数--制造业采购经理指数;非制造业采购经理指数
+    public final static String CATALOG_INDUSTRY = "industry";
+    public final static String CATALOG_NONINDUSTRY = "nonindustry";
+
 }

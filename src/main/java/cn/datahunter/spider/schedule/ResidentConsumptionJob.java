@@ -23,7 +23,7 @@ public class ResidentConsumptionJob {
 
         String monthPart = CommonUtils.getCurrentMonth();
         String url = "http://data.stats.gov.cn/tablequery.htm?m=QueryData&code=AA0108&wds=%5B%7B%22wdcode%22%3A%22sj%22%2C%22valuecode%22%3A%22" + monthPart + "%22%7D%5D";
-        residentConsumptionProcess.catalog = Constants.CATALOG_PRONVINCE;
+        residentConsumptionProcess.RESIDENTCONSUMPTING_CATALOG = Constants.CATALOG_PRONVINCE;
         Spider.create(residentConsumptionProcess).addUrl(url)
                 .thread(1).run();
     }
@@ -36,7 +36,7 @@ public class ResidentConsumptionJob {
 
         String monthPart = CommonUtils.getCurrentMonth();
         String url = "http://data.stats.gov.cn/tablequery.htm?m=QueryData&code=AA010A&wds=%5B%7B%22wdcode%22%3A%22sj%22%2C%22valuecode%22%3A%22" + monthPart + "%22%7D%5D";
-        residentConsumptionProcess.catalog = Constants.CATALOG_MAINCITY;
+        residentConsumptionProcess.RESIDENTCONSUMPTING_CATALOG = Constants.CATALOG_MAINCITY;
         Spider.create(residentConsumptionProcess).addUrl(url)
                 .thread(1).run();
     }

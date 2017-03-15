@@ -25,7 +25,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 public class ResidentConsumptionProcess implements PageProcessor {
 
     //主要城市-maincity  省份-province
-    public static String catalog = StringUtils.EMPTY;
+    public static String RESIDENTCONSUMPTING_CATALOG = StringUtils.EMPTY;
 
     private Site site =
             Site.me()
@@ -69,7 +69,7 @@ public class ResidentConsumptionProcess implements PageProcessor {
             }
         }
         try {
-            FileUtils.writeLines(new File("E:/" + catalog + "/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", dataLst);
+            FileUtils.writeLines(new File("E:/" + RESIDENTCONSUMPTING_CATALOG + "/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", dataLst);
         } catch (IOException e) {
             e.printStackTrace();
         }
