@@ -13,4 +13,9 @@ public class Constants {
     public final static String CATALOG_INDUSTRY = "industry";
     public final static String CATALOG_NONINDUSTRY = "nonindustry";
 
+    //人口数据--全国;各省份;主要城市
+    public final static String CATALOG_POPULATION_ALL = "populationall";
+    public final static String CATALOG_POPULATION_PROVINCE = "populationprovince";
+    public final static String CATALOG_POPULATION_MAINCITY = "populationcity";
+
 }

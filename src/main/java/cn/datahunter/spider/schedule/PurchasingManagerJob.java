@@ -19,7 +19,7 @@ public class PurchasingManagerJob {
 
 
     /**
-     * 居民消费价格指数-中国全国月度CPI/中国各个省份月度CPI
+     * 制造业采购经理指数
      */
     @Scheduled(cron = "0 59 16 * * *", zone = "Asia/Shanghai")
     public void execute1() {
@@ -31,7 +31,7 @@ public class PurchasingManagerJob {
     }
 
     /**
-     * 中国主要城市
+     * 非制造业采购经理指数
      */
     @Scheduled(cron = "0 59 16 * * *", zone = "Asia/Shanghai")
     public void execut2() {

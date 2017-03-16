@@ -52,8 +52,6 @@ public class PurchasingManagerProcess implements PageProcessor {
         String rawText = page.getRawText();
         JSONObject returndata = (JSONObject) JSON.parseObject(rawText).get("returndata");
 
-        JSONArray datanodesJSONArr = returndata.getJSONArray("datanodes");
-
         List<String> resultData = new ArrayList<>();
 
         /*取列名* */
@@ -68,6 +66,7 @@ public class PurchasingManagerProcess implements PageProcessor {
         resultData.add(CommonUtils.removeBrackets(wdLst.toString()));
 
         /*取数据*/
+        JSONArray datanodesJSONArr = returndata.getJSONArray("datanodes");
         List<String> dataLst = new ArrayList<>();
         for (int i = 1; i < datanodesJSONArr.size() + 1; i++) {
             //一共13列，余数是1就是第一列
