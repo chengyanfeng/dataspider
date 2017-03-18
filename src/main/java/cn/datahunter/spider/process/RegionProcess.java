@@ -1,22 +1,18 @@
 package cn.datahunter.spider.process;
 
 
+import cn.datahunter.spider.util.CommonUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import cn.datahunter.spider.util.CommonUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Selectable;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by root on 2017/3/16.
@@ -48,12 +44,11 @@ public class RegionProcess implements PageProcessor {
         List<String> resultData = new ArrayList<>();
         resultData.add("行政区划代码,行政区划名称");
 
-        Map<String, Map<String,List<String>>> hierarchyMap = new HashMap<>();
-        Map<String, List<String>> internalMap = new HashMap<>();
-        List<String> dataLst = new LinkedList<>();
+        String firstLevel = StringUtils.EMPTY;
+        String secondLevel = StringUtils.EMPTY;
+        String thirdyLevel = StringUtils.EMPTY;
 
-        String hierarchyKey = StringUtils.EMPTY;
-        String internalKey = StringUtils.EMPTY;
+        String topTwoOffset = StringUtils.EMPTY;
 
         for (Selectable pnode : pnodes) {
 
@@ -66,55 +61,26 @@ public class RegionProcess implements PageProcessor {
 
             //后4位是0，表示省或直辖市
             if (StringUtils.isNotEmpty(regionCode) && regionCode.endsWith("0000")) {
-                hierarchyMap.clear();
 
-                dataLst.add(0, regionCode);
-                dataLst.add(1, regionName);
+                firstLevel = regionCode + "," + regionName;
 
-                internalKey = regionCode.substring(0, 3);
-                internalMap.put(internalKey, dataLst);
+                topTwoOffset = regionCode.substring(0, 2);
+            } else if (CommonUtils.isSecondLevelRegison(regionCode, topTwoOffset)) {
 
-                hierarchyKey = regionCode.substring(0, 2);
-                hierarchyMap.put(hierarchyKey, internalMap);
+                //市或市辖区
+                secondLevel = regionCode + "," + regionName;
+            } else {
+
+                thirdyLevel = firstLevel + "," + secondLevel + "," + regionCode + "," + regionName;
+
+                resultData.add(thirdyLevel);
             }
 
-            if (CommonUtils.isSecondLevelRegison(regionCode, hierarchyKey)) {
-                dataLst.add(2, regionCode);
-                dataLst.add(3, regionName);
-
-                internalMap = hierarchyMap.get(hierarchyKey);
-
-                internalMap.clear();
-                internalKey = regionCode.substring(0, 4);
-                internalMap.put(internalKey,dataLst);
+            try {
+                FileUtils.writeLines(new File("E:/regioncode/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", resultData);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-
-
-
-            if (StringUtils.isEmpty(regionCode)) {
-                //市级以下
-
-
-                if (StringUtils.isNotEmpty(regionName) && !regionName.equals("市辖区")) {
-
-                    StringBuilder str = new StringBuilder();
-                    str.append(regionCode).append(",").append(regionName);
-                    resultData.add(str.toString());
-                }
-
-            }else{
-                //市级
-                StringBuilder str = new StringBuilder();
-                str.append(regionCode).append(",").append(regionName);
-                resultData.add(str.toString());
-            }
-        }
-
-        try {
-            FileUtils.writeLines(new File("E:/regioncode/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", resultData);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
