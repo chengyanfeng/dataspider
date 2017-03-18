@@ -33,4 +33,21 @@ public class CommonUtils {
         String lastMonth = dateTime.minusMonths(2).toString("yyyyMM");
         return lastMonth;
     }
+
+    /**
+     * 判断是否是给定省或直辖市的二级地区
+     * @param code  需要判断的区域代码
+     * @param topTwoOffset  给定省或直辖市的前2位
+     * @return
+     */
+    public static boolean isSecondLevelRegison(String code,String topTwoOffset) {
+        if (StringUtils.isNotEmpty(code)) {
+            String codeTop = code.substring(0, 2);
+            if (codeTop.equals(topTwoOffset) && !code.endsWith("0000") && code.endsWith("00")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
