@@ -47,6 +47,7 @@ public class ExchangeRateProduct {
         dataList.add("rate,scur,date,tcur,retenm,status");
         dataList.add(rate+","+scur+","+date+","+tcur+","+retenm+","+status);
 
+
         FileUtils.writeLines(new File("G:/"+"人民币汇率"+ CommonUtils.getBeforeMonth(0)+".csv"), "UTF-8",dataList);
     }
 }
