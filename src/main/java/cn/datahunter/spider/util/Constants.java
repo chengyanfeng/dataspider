@@ -18,4 +18,12 @@ public class Constants {
     public final static String CATALOG_POPULATION_PROVINCE = "populationprovince";
     public final static String CATALOG_POPULATION_MAINCITY = "populationcity";
 
+    //主要城市/区县  历史 天气
+    public final static String CATALOG_WEATHER_HISTORY_MAINCITY = "weather_maincity_history";
+    public final static String CATALOG_WEATHER_HISTORY_COUNTRY = "weather_country_history";
+    //主要城市/区县  当天 天气
+    public final static String CATALOG_WEATHER_MAINCITY = "weather_maincity";
+    public final static String CATALOG_WEATHER_COUNTRY = "weather_country";
+
+
 }
