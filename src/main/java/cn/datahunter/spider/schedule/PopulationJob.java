@@ -17,7 +17,6 @@ public class PopulationJob {
     @Autowired
     static PopulationProcess populationProcess;
 
-
     /**
      * 人口数据-全国
      */
@@ -33,7 +32,7 @@ public class PopulationJob {
     /**
      * 人口数据-主要城市
      */
-    @Scheduled(cron = "0 59 16 * * *", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 6 17 * * *", zone = "Asia/Shanghai")
     public void execute2() {
 
         String url = "http://data.stats.gov.cn/easyquery.htm?m=QueryData&dbcode=csnd&rowcode=reg&colcode=zb&wds=%5B%7B%22wdcode%22%3A%22sj%22%2C%22valuecode%22%3A%222015%22%7D%5D&dfwds=%5B%7B%22wdcode%22%3A%22zb%22%2C%22valuecode%22%3A%22A02%22%7D%5D&k1=1489577110517";
