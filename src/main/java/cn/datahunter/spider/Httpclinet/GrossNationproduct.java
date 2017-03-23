@@ -47,7 +47,7 @@ public class GrossNationproduct {
         List<Object> listdatalast =uralesidentsMap.get("data");
         output.add(CommonUtils.removeBrackets(listnamelast.toString()));
         output.add(CommonUtils.removeBrackets(listdatalast.toString()));
-        FileUtils.writeLines(new File("G:/"+"全国居民季度收支表"+ CommonUtils.getCurrentMonth()+".csv"), "UTF-8", output);
+        FileUtils.writeLines(new File("G:/"+"全国居民季度收支表"+ CommonUtils.getBeforeMonth(0)+".csv"), "UTF-8", output);
     }
 
     public static String convertStreamToString(InputStream is) {
