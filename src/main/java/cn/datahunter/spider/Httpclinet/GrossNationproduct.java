@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017/3/15.
  */
-public class Test {
+public class GrossNationproduct {
     /**
      * @param args
      * @throws IOException
@@ -47,7 +47,7 @@ public class Test {
         List<Object> listdatalast =uralesidentsMap.get("data");
         output.add(CommonUtils.removeBrackets(listnamelast.toString()));
         output.add(CommonUtils.removeBrackets(listdatalast.toString()));
-        FileUtils.writeLines(new File("G:/"+ CommonUtils.getCurrentMonth()+".csv"), "UTF-8", output);
+        FileUtils.writeLines(new File("G:/"+"全国居民季度收支表"+ CommonUtils.getCurrentMonth()+".csv"), "UTF-8", output);
     }
 
     public static String convertStreamToString(InputStream is) {
@@ -72,7 +72,7 @@ public class Test {
     }
 
 
-        //居民收支情况
+        //全国居民收支情况
     public static Map<String,List<Object>> residentsOfbalanceOfpayments (String url, List listname, List listdata) throws IOException {
         HashMap<String,List<Object>> map= new HashMap<>();
         // 创建HttpClient实例
