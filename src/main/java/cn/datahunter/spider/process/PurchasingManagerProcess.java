@@ -79,7 +79,7 @@ public class PurchasingManagerProcess implements PageProcessor {
         resultData.add(CommonUtils.removeBrackets(dataLst.toString()));
 
         try {
-            FileUtils.writeLines(new File("E:/" + PURCHASINGMANAGER_CATALOG + "/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", resultData);
+            FileUtils.writeLines(new File("/" + PURCHASINGMANAGER_CATALOG + "/" + CommonUtils.getBeforeMonth(1) + ".csv"), "UTF-8", resultData);
         } catch (IOException e) {
             e.printStackTrace();
         }
