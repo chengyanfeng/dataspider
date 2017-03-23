@@ -67,6 +67,8 @@ public class PostCodeProcess implements PageProcessor {
             secondLevel = StringUtils.isEmpty(secondLevel) ? "市辖区" : secondLevel;
 
             List<Selectable> nodes = detailHtml.xpath("//table[@class='t12']/tbody/tr[@bgcolor='#ffffff']").nodes();
+
+            resultData.add("省或直辖市,市,区县,邮编");
             for (Selectable node : nodes) {
 
                 String city = node.xpath("//tr/td/a/b/text()").get();
@@ -95,7 +97,7 @@ public class PostCodeProcess implements PageProcessor {
 
             if (count == catchSize) {
                 try {
-                    FileUtils.writeLines(new File("E:/postCode/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", resultData);
+                    FileUtils.writeLines(new File("/postCode/" + CommonUtils.getBeforeMonth(0) + ".csv"), "UTF-8", resultData);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

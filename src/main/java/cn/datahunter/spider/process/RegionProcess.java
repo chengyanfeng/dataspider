@@ -2,8 +2,11 @@ package cn.datahunter.spider.process;
 
 
 import cn.datahunter.spider.util.CommonUtils;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
@@ -17,6 +20,7 @@ import java.util.List;
 /**
  * Created by root on 2017/3/16.
  */
+@Component
 public class RegionProcess implements PageProcessor {
 
     private Site site = Site.me()
@@ -39,48 +43,56 @@ public class RegionProcess implements PageProcessor {
     @Override
     public void process(Page page) {
 
-        List<Selectable> pnodes = page.getHtml().xpath("//div[@class='TRS_PreAppend']/p[@class='MsoNormal']").nodes();
+        if (StringUtils.equals(page.getUrl().toString(), "http://www.stats.gov.cn/tjsj/tjbz/xzqhdm/")) {
 
-        List<String> resultData = new ArrayList<>();
-        resultData.add("行政区划代码,行政区划名称");
+            String url = page.getHtml().xpath("//ul[@class='center_list_contlist']/li/a/@href").get();
+            page.addTargetRequest(url);
+        } else {
 
-        String firstLevel = StringUtils.EMPTY;
-        String secondLevel = StringUtils.EMPTY;
-        String thirdyLevel = StringUtils.EMPTY;
+            List<Selectable> pnodes = page.getHtml().xpath("//div[@class='TRS_PreAppend']/p[@class='MsoNormal']").nodes();
 
-        String topTwoOffset = StringUtils.EMPTY;
+            List<String> resultData = new ArrayList<>();
+            resultData.add("省级行政区划代码,省级行政区划名称,市级行政区划代码,市级行政区划名称,区县行政区划代码,区县行政区划名称");
 
-        for (Selectable pnode : pnodes) {
+            String firstLevel = StringUtils.EMPTY;
+            String secondLevel = StringUtils.EMPTY;
+            String thirdyLevel = StringUtils.EMPTY;
 
-            String regionCode = pnode.xpath("//b[1]/span[@lang='EN-US']/text()").get();
-            regionCode = StringUtils.isEmpty(regionCode) ? pnode.xpath("//span[@lang='EN-US']/text()").get() : regionCode;
+            String topTwoOffset = StringUtils.EMPTY;
 
-            String regionName = pnode.xpath("//b[2]/span/text()").get();
-            regionName = StringUtils.isEmpty(regionName) ? pnode.xpath("//span[3]/text()").get() : regionName;
-            regionName = org.springframework.util.StringUtils.trimAllWhitespace(regionName);
+            for (Selectable pnode : pnodes) {
 
-            //后4位是0，表示省或直辖市
-            if (StringUtils.isNotEmpty(regionCode) && regionCode.endsWith("0000")) {
+                String regionCode = pnode.xpath("//b[1]/span[@lang='EN-US']/text()").get();
+                regionCode = StringUtils.isEmpty(regionCode) ? pnode.xpath("//span[@lang='EN-US']/text()").get() : regionCode;
 
-                firstLevel = regionCode + "," + regionName;
+                String regionName = pnode.xpath("//b[2]/span/text()").get();
+                regionName = StringUtils.isEmpty(regionName) ? pnode.xpath("//span[3]/text()").get() : regionName;
+                regionName = org.springframework.util.StringUtils.trimAllWhitespace(regionName);
 
-                topTwoOffset = regionCode.substring(0, 2);
-            } else if (CommonUtils.isSecondLevelRegison(regionCode, topTwoOffset)) {
+                //后4位是0，表示省或直辖市
+                if (StringUtils.isNotEmpty(regionCode) && regionCode.endsWith("0000")) {
 
-                //市或市辖区
-                secondLevel = regionCode + "," + regionName;
-            } else {
+                    firstLevel = regionCode + "," + regionName;
 
-                thirdyLevel = firstLevel + "," + secondLevel + "," + regionCode + "," + regionName;
+                    topTwoOffset = regionCode.substring(0, 2);
+                } else if (CommonUtils.isSecondLevelRegison(regionCode, topTwoOffset)) {
 
-                resultData.add(thirdyLevel);
-            }
+                    //市或市辖区
+                    secondLevel = regionCode + "," + regionName;
+                } else {
 
-            try {
-                FileUtils.writeLines(new File("E:/regioncode/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", resultData);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    thirdyLevel = firstLevel + "," + secondLevel + "," + regionCode + "," + regionName;
+
+                    resultData.add(thirdyLevel);
+                }
+
+                try {
+                    FileUtils.writeLines(new File("/regioncode/" + CommonUtils.getBeforeMonth(0) + ".csv"), "UTF-8", resultData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
     }
 }
