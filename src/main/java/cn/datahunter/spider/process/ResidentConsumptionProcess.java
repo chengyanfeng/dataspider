@@ -62,6 +62,18 @@ public class ResidentConsumptionProcess implements PageProcessor {
                 line.add(data.toString());
                 if (line.size() == 16) {
 
+                    if (dataLst.size() == 0) {
+
+                        line.add("日期");
+                        line.add("年份");
+                        line.add("月份");
+                    }else{
+
+                        line.add(CommonUtils.getBeforeMonth(0,"yyyy-MM-dd"));
+                        line.add(CommonUtils.getBeforeMonth(0, "yyyy"));
+                        line.add(CommonUtils.getBeforeMonth(0, "MM"));
+                    }
+
                     dataLst.add(CommonUtils.removeBrackets(line.toString()));
                     line = new ArrayList<>();
                 }
@@ -69,7 +81,7 @@ public class ResidentConsumptionProcess implements PageProcessor {
             }
         }
         try {
-            FileUtils.writeLines(new File("E:/" + RESIDENTCONSUMPTING_CATALOG + "/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", dataLst);
+            FileUtils.writeLines(new File("/" + RESIDENTCONSUMPTING_CATALOG + "/" + CommonUtils.getBeforeMonth(1) + ".csv"), "UTF-8", dataLst);
         } catch (IOException e) {
             e.printStackTrace();
         }

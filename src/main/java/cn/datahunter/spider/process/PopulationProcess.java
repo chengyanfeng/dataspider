@@ -72,11 +72,13 @@ public class PopulationProcess implements PageProcessor {
             int columnNum = 36;
 
             for (int i = 0; i < columnNum; i++) {
+
                 setDataLst(i);
             }
         } else if (StringUtils.equals(CATALOG_POPULATION, Constants.CATALOG_POPULATION_PROVINCE)) {
 
             for (int i = 0; i < datanodesJSONArr.size(); i++) {
+
                 setDataLst(i);
             }
         } else {
@@ -84,16 +86,43 @@ public class PopulationProcess implements PageProcessor {
             int columnNum = 10;
             for (int i = 0; i < datanodesJSONArr.size(); i++) {
                 if (i % columnNum == 0) {
+
                     setDataLst(i);
                 }
             }
         }
 
-        resultData.add(CommonUtils.removeBrackets(wdLst.toString()));
-        resultData.add(CommonUtils.removeBrackets(dataLst.toString()));
+        String year = StringUtils.EMPTY;
+
+        //非全国
+        if (!StringUtils.equals(CATALOG_POPULATION, Constants.CATALOG_POPULATION_ALL) && (wdLst.size() == dataLst.size())) {
+
+            year = datanodesJSONArr.getJSONObject(0).getJSONArray("wds").getJSONObject(2).getString("valuecode");
+
+            //把行转列
+            for (int i = 0; i < wdLst.size(); i++) {
+
+                StringBuilder line = new StringBuilder();
+                if (i == 0) {
+
+                    line.append("地区").append(",").append("人口数(万)").append(",").append("年份");
+                    resultData.add(line.toString());
+                    line = new StringBuilder();
+                }
+
+                line.append(wdLst.get(i)).append(",").append(dataLst.get(i)).append(",").append(year);
+                resultData.add(line.toString());
+            }
+        } else {
+
+            year = datanodesJSONArr.getJSONObject(0).getJSONArray("wds").getJSONObject(1).getString("valuecode");
+            resultData.add(CommonUtils.removeBrackets(wdLst.toString()) + "," + "年份");
+            resultData.add(CommonUtils.removeBrackets(dataLst.toString()) + "," + year);
+        }
+
         //写入csv中
         try {
-            FileUtils.writeLines(new File("E:/" + CATALOG_POPULATION + "/" + CommonUtils.getCurrentMonth() + ".csv"), "UTF-8", resultData);
+            FileUtils.writeLines(new File("/" + CATALOG_POPULATION + "/" + year + ".csv"), "UTF-8", resultData);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,6 +132,7 @@ public class PopulationProcess implements PageProcessor {
      * 数据数组赋值
      */
     private void setDataLst(int index) {
+
         JSONObject data = (JSONObject) datanodesJSONArr.get(index);
         JSONObject dataObj = (JSONObject) data.get("data");
         dataLst.add(dataObj.getString("data"));

@@ -18,10 +18,10 @@ public class ResidentConsumptionJob {
     /**
      * 居民消费价格指数-中国全国月度CPI/中国各个省份月度CPI
      */
-    @Scheduled(cron = "0 13 19 * * *", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 10 0 23 * *", zone = "Asia/Shanghai")
     public void execute1() {
 
-        String monthPart = CommonUtils.getCurrentMonth();
+        String monthPart = CommonUtils.getBeforeMonth(1);
         String url = "http://data.stats.gov.cn/tablequery.htm?m=QueryData&code=AA0108&wds=%5B%7B%22wdcode%22%3A%22sj%22%2C%22valuecode%22%3A%22" + monthPart + "%22%7D%5D";
         residentConsumptionProcess.RESIDENTCONSUMPTING_CATALOG = Constants.CATALOG_PRONVINCE;
         Spider.create(residentConsumptionProcess).addUrl(url)
@@ -31,13 +31,14 @@ public class ResidentConsumptionJob {
     /**
      * 中国主要城市
      */
-    @Scheduled(cron = "0 13 19 * * *", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 15 0 23 * *", zone = "Asia/Shanghai")
     public void execut2() {
 
-        String monthPart = CommonUtils.getCurrentMonth();
+        String monthPart = CommonUtils.getBeforeMonth(1);
         String url = "http://data.stats.gov.cn/tablequery.htm?m=QueryData&code=AA010A&wds=%5B%7B%22wdcode%22%3A%22sj%22%2C%22valuecode%22%3A%22" + monthPart + "%22%7D%5D";
         residentConsumptionProcess.RESIDENTCONSUMPTING_CATALOG = Constants.CATALOG_MAINCITY;
         Spider.create(residentConsumptionProcess).addUrl(url)
                 .thread(1).run();
     }
+
 }
