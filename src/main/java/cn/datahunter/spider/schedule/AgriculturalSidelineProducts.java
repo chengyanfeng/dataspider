@@ -6,11 +6,14 @@ import cn.datahunter.spider.util.CommonUtils;
 import cn.datahunter.spider.util.GNPandGDPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
 import us.codecraft.webmagic.Spider;
 
 /**
  * Created by Administrator on 2017/3/21.
  */
+@Component
 public class AgriculturalSidelineProducts {
 
 
